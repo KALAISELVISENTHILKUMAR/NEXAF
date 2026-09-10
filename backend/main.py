@@ -162,18 +162,17 @@ def analyze_url_for_threats(url: str):
 # API Endpoints
 # ---------------------------------------------------------
 @app.get("/")
-def read_root():
-    return {"message": "NEXAF AI Firewall Backend Running"}
+def root():
+    return {
+        "message": "NEXAF AI Firewall API is running"
+    }
+
 
 @app.post("/analyze", response_model=AnalyzeResponse)
-def analyze_request(request: AnalyzeRequest):
-    """
-    Endpoint for real-time risk analysis from the browser security layer.
-    """
-    # Analyze the incoming request for threats
+def analyze(request: AnalyzeRequest):
     result = analyze_url_for_threats(request.url)
-    
-    # Advanced Security Logging (DO NOT log sensitive info)
+
+    # Security logging
     print("-" * 50)
     print(f"[NEXAF] URL        : {request.url}")
     print(f"[NEXAF] Threat     : {'YES' if result['threat_detected'] else 'NO'}")
@@ -183,5 +182,5 @@ def analyze_request(request: AnalyzeRequest):
     print(f"[NEXAF] Confidence : {result['confidence']}")
     print(f"[NEXAF] Decision   : {result['decision']}")
     print("-" * 50)
-    
+
     return result

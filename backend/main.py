@@ -1,10 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 from typing import Optional, List
 import urllib.parse
 import re
 
 app = FastAPI()
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    errors = []
+    for error in exc.errors():
+        field = ".".join(str(loc) for loc in error["loc"])
+        errors.append(f"field '{field}' is invalid or missing: {error['msg']}")
+    return JSONResponse(
+        status_code=422,
+        content={"detail": "Validation Error", "errors": errors}
+    )
 
 # ---------------------------------------------------------
 # Pydantic Models for API Requests and Responses
@@ -24,6 +37,8 @@ class AnalyzeResponse(BaseModel):
     confidence: int
     evidence: List[str]
     reason: str
+    explanation: str
+    recommendation: str
 
 # ---------------------------------------------------------
 # Threat Detection Engine
@@ -134,7 +149,9 @@ def analyze_url_for_threats(url: str):
             "risk_level": "LOW",
             "confidence": 100,
             "evidence": [],
-            "reason": "No known malicious indicators detected"
+            "reason": "No known malicious indicators detected",
+            "explanation": "NEXAF did not detect known malicious indicators in this request.",
+            "recommendation": "No immediate action is required."
         }
     else:
         if max_confidence >= 80:
@@ -146,6 +163,56 @@ def analyze_url_for_threats(url: str):
             
         reason = f"A {conf_str}-confidence {primary_attack_type} attack indicator was detected"
         
+        # Construct explanation based on risk_level
+        if risk_level == "LOW":
+            risk_desc = "No significant malicious indicators were detected."
+        elif risk_level == "MEDIUM":
+            risk_desc = "NEXAF detected suspicious activity that requires monitoring but does not currently meet the blocking threshold."
+        elif risk_level == "HIGH":
+            risk_desc = "NEXAF detected a high-risk malicious pattern and blocked the request."
+        elif risk_level == "CRITICAL":
+            risk_desc = "NEXAF detected a critical-risk attack indicator and blocked the request."
+        else:
+            risk_desc = f"NEXAF made a {decision} decision based on a {risk_level} risk level."
+
+        # Construct explanation based on all detected attack types
+        detected_types = set()
+        for attack_name, sigs in THREAT_SIGNATURES.items():
+            for pattern, r_w, c_w, ev in sigs:
+                if ev in evidence_list:
+                    detected_types.add(attack_name)
+
+        attack_descs = []
+        if "XSS" in detected_types:
+            attack_descs.append("script-injection indicators that could potentially cause unwanted JavaScript to execute in a user's browser")
+        if "SQL Injection" in detected_types:
+            attack_descs.append("SQL manipulation indicators that could potentially alter a database query")
+        if "Path Traversal" in detected_types:
+            attack_descs.append("path traversal indicators that could potentially attempt to access files outside the intended directory")
+        if "Command Injection" in detected_types:
+            attack_descs.append("command-injection indicators that could potentially attempt to execute operating-system commands")
+        if "Suspicious URL patterns" in detected_types:
+            attack_descs.append("suspicious characteristics that require caution or monitoring")
+
+        if attack_descs:
+            attack_desc = " and ".join(attack_descs)
+        else:
+            attack_desc = "suspicious patterns"
+
+        # Combine explanation
+        if evidence_list:
+            explanation = f"{risk_desc} The request contains {attack_desc}. Specific indicators found: { ', '.join(evidence_list) }."
+        else:
+            explanation = f"{risk_desc} The request contains {attack_desc}."
+
+        # Recommendation logic
+        if decision == "BLOCK":
+            recommendation = "Do not send the suspicious payload. Review and sanitize the affected input."
+        elif decision == "MONITOR":
+            recommendation = "Continue monitoring this request and verify the source before allowing similar activity."
+        else:
+            recommendation = "No immediate action is required."
+
         return {
             "allowed": allowed,
             "decision": decision,
@@ -155,7 +222,9 @@ def analyze_url_for_threats(url: str):
             "risk_level": risk_level,
             "confidence": max_confidence,
             "evidence": evidence_list,
-            "reason": reason
+            "reason": reason,
+            "explanation": explanation,
+            "recommendation": recommendation
         }
 
 # ---------------------------------------------------------

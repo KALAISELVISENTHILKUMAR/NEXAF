@@ -1,0 +1,1185 @@
+/* ==========================================================================
+   NEXAF — Next-Gen AI Firewall
+   Enterprise Security Console (Commercial Firewalla MSP Architecture)
+   Module 7: Frontend UI
+   ========================================================================== */
+
+/* Design Tokens */
+:root {
+  --app-bg: #0d0f14;
+  --nav-bg: #12141a;
+  --sidebar-bg: #111318;
+  --card-bg: #161820;
+  --card-header-bg: #191c24;
+  --input-bg: #0e1016;
+
+  --border-color: #212530;
+  --border-subtle: #1a1d26;
+  --border-focus: #0ea5e9;
+
+  --text-main: #f1f5f9;
+  --text-muted: #64748b;
+  --text-secondary: #94a3b8;
+  --text-dim: #475569;
+
+  --fw-green: #10b981;
+  --fw-green-glow: rgba(16, 185, 129, 0.18);
+  --fw-blue: #0ea5e9;
+  --fw-blue-dark: #0284c7;
+  --fw-purple: #8b5cf6;
+  --fw-amber: #f59e0b;
+  --fw-red: #ef4444;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+/* Base Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.firewall-app {
+  background-color: var(--app-bg);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   1. Global Top Navigation (Firewalla MSP Style)
+   ========================================================================== */
+.global-navbar {
+  height: 52px;
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.product-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-shield-icon {
+  display: flex;
+  align-items: center;
+}
+
+.brand-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.nav-pipe {
+  color: var(--border-color);
+  font-size: 14px;
+}
+
+.gateway-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #171a22;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.gateway-selector:hover {
+  border-color: #333a4c;
+}
+
+.gateway-icon {
+  color: var(--text-secondary);
+  display: flex;
+}
+
+.dropdown-caret {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.system-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.status-online-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--fw-green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--fw-green);
+  animation: pulseGreen 2.4s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.status-online-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fw-green);
+  letter-spacing: 0.3px;
+}
+
+.tier-badge {
+  background-color: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #c4b5fd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+}
+
+.user-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   2. Workspace & Sticky Left Sidebar
+   ========================================================================== */
+.app-workspace {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 52px);
+  position: relative;
+}
+
+.sidebar-navigation {
+  width: 210px;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 10px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.sidebar-header-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  background-color: #171922;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.sidebar-btn-icon {
+  font-size: 14px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.menu-category {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.7px;
+  padding: 12px 10px 6px;
+  text-transform: uppercase;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.menu-item:hover:not(.disabled-item) {
+  background-color: #181b24;
+  color: #ffffff;
+}
+
+.menu-item.active {
+  background-color: #1a202e;
+  color: #ffffff;
+  font-weight: 600;
+  border-left: 3px solid var(--fw-blue);
+}
+
+.menu-icon {
+  display: flex;
+  color: var(--text-muted);
+}
+
+.menu-item.active .menu-icon {
+  color: var(--fw-blue);
+}
+
+.disabled-item {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+  font-size: 11px;
+}
+
+.footer-telemetry {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.telemetry-val {
+  color: var(--fw-green);
+  font-weight: 600;
+}
+
+.footer-version {
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+/* ==========================================================================
+   3. Main Firewall Dashboard Canvas
+   ========================================================================== */
+.firewall-dashboard {
+  flex: 1;
+  padding: 18px 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* Page Header */
+.dashboard-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-main-heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.badge-read-only {
+  background-color: rgba(239, 68, 68, 0.85);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.4px;
+}
+
+.badge-ai-engine {
+  background-color: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #c084fc;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+}
+
+.timestamp-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   4. Cards Base System (Firewalla Style)
+   ========================================================================== */
+.fw-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--card-header-bg);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.title-with-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+.card-caption {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.card-link {
+  font-size: 11px;
+  color: var(--fw-blue);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.meta-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  background-color: #212634;
+  border: 1px solid #2d3345;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.meta-cyan {
+  background-color: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.3);
+  color: var(--fw-blue);
+}
+
+.meta-purple {
+  background-color: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #c4b5fd;
+}
+
+.meta-blue {
+  background-color: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.3);
+  color: #38bdf8;
+}
+
+.card-sub-info {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.status-indicator-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.dot-green {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--fw-green);
+}
+
+.panel-state-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* ==========================================================================
+   5. Health / Telemetry Summary Strip (Firewalla signature)
+   ========================================================================== */
+.summary-card {
+  padding: 14px 16px;
+}
+
+.summary-card .card-title-bar {
+  padding: 0 0 10px 0;
+  background: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 12px;
+}
+
+.summary-metrics-row {
+  display: flex;
+  gap: 36px;
+  margin-bottom: 12px;
+}
+
+.summary-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.stat-number {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stat-descriptor {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.health-track-bar {
+  width: 100%;
+  height: 9px;
+  background-color: #1a1d26;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+}
+
+.health-track-fill {
+  width: 100%;
+  height: 100%;
+  background: #00c853;
+  border-radius: var(--radius-xs);
+}
+
+.health-time-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   6. TELEMETRY CHARTS (Firewalla Histogram & Dual Line Graphs)
+   ========================================================================== */
+.charts-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.chart-card {
+  padding: 12px 14px;
+}
+
+.chart-card .card-title-bar {
+  padding: 0 0 10px 0;
+  background: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 8px;
+}
+
+.chart-timeframe {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.chart-metric-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chart-legend-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dot-cyan { background-color: var(--fw-blue); }
+.dot-red { background-color: var(--fw-red); }
+
+.chart-container {
+  display: flex;
+  gap: 8px;
+  height: 145px;
+}
+
+.chart-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  text-align: right;
+  width: 34px;
+  padding-bottom: 18px;
+}
+
+.chart-canvas-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.fw-svg-chart {
+  width: 100%;
+  height: 122px;
+  overflow: visible;
+}
+
+.chart-bar {
+  transition: fill 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+
+.chart-bar:hover {
+  fill: #38bdf8;
+  filter: drop-shadow(0 0 4px #0ea5e9);
+}
+
+.chart-x-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   7. Quick Metrics Bar (WAN / CPU / Memory / Rules)
+   ========================================================================== */
+.stats-mini-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.mini-stat-card {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mini-stat-val {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.metric-up { color: var(--fw-amber); }
+.metric-down { color: var(--fw-blue); }
+
+.mini-progress-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-track {
+  flex: 1;
+  height: 6px;
+  background-color: #1c202a;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+}
+
+.mini-fill.fill-green {
+  height: 100%;
+  background-color: var(--fw-green);
+  border-radius: var(--radius-xs);
+}
+
+.mini-pct {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #ffffff;
+}
+
+.mini-stat-num {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   8. Request Analyzer Console Card (Module 7)
+   ========================================================================== */
+.console-subtext {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.analyzer-console-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.input-method-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background-color: #191c25;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.console-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.console-input-wrap:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
+}
+
+.console-prompt-caret {
+  color: var(--fw-blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.console-text-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 0;
+  outline: none;
+}
+
+.console-text-input::placeholder {
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.fw-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background-color: var(--fw-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.fw-primary-btn:hover {
+  background-color: var(--fw-blue-dark);
+}
+
+.fw-primary-btn:active {
+  transform: translateY(1px);
+}
+
+.fw-alert-notice {
+  margin-top: 12px;
+  display: none;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.fw-alert-notice.visible {
+  display: block;
+  background-color: rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  color: #7dd3fc;
+}
+
+/* ==========================================================================
+   9. Security Result Panel (High-Density Telemetry Matrix)
+   ========================================================================== */
+.telemetry-table-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.telemetry-cell {
+  background-color: #12141a;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 76px;
+}
+
+.cell-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+
+.cell-body {
+  display: flex;
+  align-items: center;
+}
+
+/* 1. Status */
+.fw-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.fw-status-badge.awaiting {
+  background-color: #1f232d;
+  border: 1px solid #2d3342;
+  color: #94a3b8;
+}
+
+/* Prepared Future Decision Classes (ALLOW, MONITOR, BLOCK) */
+.fw-status-badge.status-allow {
+  background-color: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--fw-green);
+}
+
+.fw-status-badge.status-monitor {
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: var(--fw-amber);
+}
+
+.fw-status-badge.status-block {
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: var(--fw-red);
+}
+
+/* 2. Attack */
+.cell-mono-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+/* 3. Risk Score */
+.cell-risk {
+  justify-content: center;
+}
+
+.risk-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.risk-val-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.fw-progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: #202430;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.fw-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.risk-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* 4. Why */
+.cell-why {
+  grid-column: span 3;
+  min-height: 58px;
+}
+
+.cell-explanation-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* 5 & 6. Remediation & Self-Healing */
+.fw-pill-state {
+  display: inline-flex;
+  align-items: center;
+  background-color: #1a1d26;
+  border: 1px solid var(--border-color);
+  padding: 4px 9px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   10. Bottom Dual Grid: Remediation & Self-Healing Cards
+   ========================================================================== */
+.dashboard-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fw-module-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.module-symbol-box {
+  width: 38px;
+  height: 38px;
+  background-color: #12141a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.module-info-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.module-tag-row {
+  display: flex;
+  align-items: center;
+}
+
+.module-badge-green {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fw-green);
+  letter-spacing: 0.6px;
+}
+
+.module-desc-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.healing-current-state {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.fw-pipeline-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.pipe-item {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: #12141a;
+  border: 1px solid var(--border-color);
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+}
+
+.pipe-sep {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   11. Footer
+   ========================================================================== */
+.dashboard-footer {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.footer-appliance-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fw-strong {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.fw-sep {
+  color: var(--border-color);
+}
+
+.footer-system-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   12. Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .charts-dual-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-mini-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .sidebar-navigation {
+    display: none;
+  }
+  .telemetry-table-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cell-why {
+    grid-column: span 2;
+  }
+  .dashboard-dual-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .global-navbar {
+    padding: 0 12px;
+  }
+  .gateway-selector, .user-meta {
+    display: none;
+  }
+  .firewall-dashboard {
+    padding: 14px 12px;
+  }
+  .summary-metrics-row {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .stats-mini-row {
+    grid-template-columns: 1fr;
+  }
+  .analyzer-console-bar {
+    flex-direction: column;
+  }
+  .fw-primary-btn {
+    padding: 10px;
+  }
+  .telemetry-table-grid {
+    grid-template-columns: 1fr;
+  }
+  .cell-why {
+    grid-column: span 1;
+  }
+}
+
+.history-card { 
+    background: #1a1a24; 
+    border: 1px solid #2a2a35; 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-top: 20px; 
+}
+
+#history-list { 
+    list-style: none; 
+    max-height: 250px; 
+    overflow-y: auto; 
+    padding: 0; 
+}
+
+.history-item { 
+    padding: 12px; 
+    border-bottom: 1px solid #2a2a35; 
+    font-size: 0.9rem; 
+}
+
+.status-blocked { 
+    color: #ff4c4c; 
+    font-weight: bold; 
+}
+
+.status-allowed { 
+    color: #00e676; 
+    font-weight: bold; 
+}

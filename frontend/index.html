@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXAF - Next-Gen AI Firewall with Smart Response">
+  <title>NEXAF — Next-Gen AI Firewall</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="firewall-app">
+  <!-- Top Global Navigation Bar (Firewalla MSP Style) -->
+  <header class="global-navbar">
+    <div class="nav-left">
+      <div class="product-brand">
+        <div class="brand-shield-icon" aria-hidden="true">
+          <svg width="22" height="26" viewBox="0 0 24 28" fill="none">
+            <path d="M12 1L2 5V12.5C2 19.1 6.3 25.1 12 27C17.7 25.1 22 19.1 22 12.5V5L12 1Z" fill="#ff385c" stroke="#ff385c" stroke-width="1.5"/>
+            <path d="M12 6L6 9V13.5C6 17.5 8.6 21.1 12 22.3C15.4 21.1 18 17.5 18 13.5V9L12 6Z" fill="#131419"/>
+            <circle cx="12" cy="14" r="2.5" fill="#ff385c"/>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-title">NEXAF</span>
+          <span class="brand-subtitle">Next-Gen AI Firewall</span>
+        </div>
+      </div>
+
+      <span class="nav-pipe">|</span>
+
+      <div class="gateway-selector">
+        <span class="gateway-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          </svg>
+        </span>
+        <span class="gateway-name">NEXAF Gateway (Active)</span>
+        <span class="dropdown-caret">▾</span>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="system-status-pill">
+        <span class="status-online-dot"></span>
+        <span class="status-online-text">Firewall Online</span>
+      </div>
+
+      <span class="tier-badge">BUSINESS</span>
+
+      <div class="user-meta">
+        <span class="user-avatar-icon" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <span class="user-name">Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-workspace">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar-navigation" aria-label="Main Navigation">
+      <div class="sidebar-header-btn">
+        <span class="sidebar-btn-icon">‹</span>
+        <span>Back to Fleet</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="menu-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </span>
+          <span>Dashboard</span>
+        </a>
+
+        <div class="menu-category">INSPECTION</div>
+        <a href="#analyzer" class="menu-item active">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <span>Request Analyzer</span>
+        </a>
+
+        <a href="#results" class="menu-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </span>
+          <span>Security Result Panel</span>
+        </a>
+
+        <div class="menu-category">CONTROLS & DEFENSE</div>
+        <a href="#remediation" class="menu-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </span>
+          <span>Intelligent Remediation</span>
+        </a>
+
+        <a href="#healing" class="menu-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </span>
+          <span>Self-Healing Status</span>
+        </a>
+
+        <div class="menu-category">SYSTEM</div>
+        <div class="menu-item disabled-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </span>
+          <span>Alarms</span>
+        </div>
+        <div class="menu-item disabled-item">
+          <span class="menu-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </span>
+          <span>Box Settings</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="footer-telemetry">
+          <span>Appliance State:</span>
+          <span class="telemetry-val">Online</span>
+        </div>
+        <div class="footer-version">v2.10.1 Early Access</div>
+      </div>
+    </aside>
+
+    <!-- Main Firewall Dashboard Canvas -->
+    <main class="firewall-dashboard">
+      <!-- Section Page Title & Live Badges -->
+      <div class="dashboard-page-header">
+        <div class="page-title-group">
+          <h1 class="page-main-heading">Performance</h1>
+          <span class="badge-read-only">Read-only</span>
+          <span class="badge-ai-engine">✦ Firewalla AI</span>
+        </div>
+        <div class="header-action-group">
+          <span class="timestamp-label">Automatic Test on ISP 1</span>
+        </div>
+      </div>
+
+      <!-- Appliance Performance / Health Summary Strip (Firewalla Exact Style) -->
+      <section class="fw-card summary-card">
+        <div class="card-title-bar">
+          <span class="card-caption">Summary</span>
+          <span class="card-link">View All Events</span>
+        </div>
+        <div class="summary-metrics-row">
+          <div class="summary-stat">
+            <span class="stat-number">0s</span>
+            <span class="stat-descriptor">Total Outage</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-number">13.1ms</span>
+            <span class="stat-descriptor">Max Latency</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-number">0.8%</span>
+            <span class="stat-descriptor">Max Packet Loss</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-descriptor">Uptime SLA</span>
+          </div>
+        </div>
+        <!-- Firewalla Signature Continuous Green Health Bar -->
+        <div class="health-track-bar" title="100% Operational Status">
+          <div class="health-track-fill"></div>
+        </div>
+        <div class="health-time-ticks">
+          <span>5 PM</span>
+          <span>9 PM</span>
+          <span>1 AM</span>
+          <span>5 AM</span>
+          <span>9 AM</span>
+          <span>1 PM</span>
+          <span>Now</span>
+        </div>
+      </section>
+
+      <!-- FIREWALLA TELEMETRY GRAPHS ROW: Bar Chart + Line Chart -->
+      <div class="charts-dual-grid">
+        <!-- 1. Daily Blocked Flows Bar Chart (Exact Firewalla Image 2/3 style) -->
+        <div class="fw-card chart-card">
+          <div class="card-title-bar">
+            <div class="title-with-tag">
+              <span class="card-caption">Daily Blocked Flows</span>
+              <span class="chart-timeframe">Last 30 days</span>
+            </div>
+            <span class="chart-metric-value">482.4 K Total</span>
+          </div>
+          <div class="chart-container">
+            <div class="chart-y-axis">
+              <span>500 K</span>
+              <span>400 K</span>
+              <span>300 K</span>
+              <span>200 K</span>
+              <span>100 K</span>
+              <span>0</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <!-- SVG Bar Chart with accurate Firewalla blue bars -->
+              <svg class="fw-svg-chart" viewBox="0 0 380 140" preserveAspectRatio="none">
+                <!-- Subtle horizontal grid lines -->
+                <line x1="0" y1="10" x2="380" y2="10" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="36" x2="380" y2="36" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="62" x2="380" y2="62" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="88" x2="380" y2="88" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="114" x2="380" y2="114" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="139" x2="380" y2="139" stroke="#2a3040" stroke-width="1"/>
+
+                <!-- Blue Vertical Histogram Bars -->
+                <rect x="8" y="118" width="7" height="21" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="20" y="105" width="7" height="34" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="32" y="80" width="7" height="59" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="44" y="42" width="7" height="97" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="56" y="24" width="7" height="115" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="68" y="58" width="7" height="81" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="80" y="65" width="7" height="74" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="92" y="82" width="7" height="57" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="104" y="98" width="7" height="41" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="116" y="108" width="7" height="31" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="128" y="112" width="7" height="27" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="140" y="95" width="7" height="44" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="152" y="104" width="7" height="35" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="164" y="115" width="7" height="24" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="176" y="90" width="7" height="49" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="188" y="110" width="7" height="29" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="200" y="122" width="7" height="17" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="212" y="116" width="7" height="23" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="224" y="102" width="7" height="37" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="236" y="114" width="7" height="25" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="248" y="120" width="7" height="19" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="260" y="85" width="7" height="54" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="272" y="94" width="7" height="45" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="284" y="110" width="7" height="29" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="296" y="118" width="7" height="21" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="308" y="100" width="7" height="39" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="320" y="92" width="7" height="47" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="332" y="105" width="7" height="34" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="344" y="98" width="7" height="41" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+                <rect x="356" y="108" width="7" height="31" fill="#0ea5e9" rx="1.5" class="chart-bar"/>
+              </svg>
+              <div class="chart-x-axis">
+                <span>Mar 16</span>
+                <span>Mar 20</span>
+                <span>Mar 24</span>
+                <span>Mar 28</span>
+                <span>Apr 1</span>
+                <span>Apr 5</span>
+                <span>Apr 9</span>
+                <span>Apr 13</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Daily Alarms & Rules Line Graph (Exact Firewalla Image 2/3 style) -->
+        <div class="fw-card chart-card">
+          <div class="card-title-bar">
+            <div class="title-with-tag">
+              <span class="card-caption">Daily Alarms & Rules</span>
+              <span class="chart-timeframe">Last 30 days</span>
+            </div>
+            <div class="chart-legend-group">
+              <span class="legend-item"><span class="legend-dot dot-cyan"></span> Alarms</span>
+              <span class="legend-item"><span class="legend-dot dot-red"></span> Rules</span>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-y-axis">
+              <span>60</span>
+              <span>50</span>
+              <span>40</span>
+              <span>30</span>
+              <span>20</span>
+              <span>10</span>
+              <span>0</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <!-- SVG Dual Line Chart with area fill and data points -->
+              <svg class="fw-svg-chart" viewBox="0 0 380 140" preserveAspectRatio="none">
+                <!-- Grid Lines -->
+                <line x1="0" y1="10" x2="380" y2="10" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="36" x2="380" y2="36" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="62" x2="380" y2="62" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="88" x2="380" y2="88" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="114" x2="380" y2="114" stroke="#1f232e" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="0" y1="139" x2="380" y2="139" stroke="#2a3040" stroke-width="1"/>
+
+                <!-- Blue Alarms Area Fill -->
+                <polygon points="10,125 35,118 60,110 85,92 110,120 135,124 160,126 185,120 210,122 235,112 260,120 285,124 310,22 335,115 360,125 360,139 10,139" fill="rgba(14, 165, 233, 0.12)"/>
+
+                <!-- Red Rules Line -->
+                <polyline points="10,134 35,130 60,128 85,115 110,128 135,130 160,132 185,128 210,130 235,122 260,130 285,132 310,120 335,128 360,132" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+
+                <!-- Blue Alarms Line -->
+                <polyline points="10,125 35,118 60,110 85,92 110,120 135,124 160,126 185,120 210,122 235,112 260,120 285,124 310,22 335,115 360,125" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+
+                <!-- Sharp Data Nodes -->
+                <circle cx="85" cy="92" r="3" fill="#0ea5e9"/>
+                <circle cx="235" cy="112" r="3" fill="#0ea5e9"/>
+                <circle cx="310" cy="22" r="4" fill="#0ea5e9" stroke="#ffffff" stroke-width="1.5"/>
+              </svg>
+              <div class="chart-x-axis">
+                <span>Mar 16</span>
+                <span>Mar 20</span>
+                <span>Mar 24</span>
+                <span>Mar 28</span>
+                <span>Apr 1</span>
+                <span>Apr 5</span>
+                <span>Apr 9</span>
+                <span>Apr 13</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Row: WAN / CPU / Memory / Blocked flows (Image 3 style) -->
+      <div class="stats-mini-row">
+        <div class="fw-card mini-stat-card">
+          <span class="mini-stat-label">WAN Throughput</span>
+          <div class="mini-stat-val">
+            <span class="metric-up">↑ 1.47 Mb/s</span>
+            <span class="metric-down">↓ 22.37 Kb/s</span>
+          </div>
+        </div>
+        <div class="fw-card mini-stat-card">
+          <span class="mini-stat-label">CPU Usage</span>
+          <div class="mini-progress-block">
+            <div class="mini-track"><div class="mini-fill fill-green" style="width: 38.3%;"></div></div>
+            <span class="mini-pct">38.3%</span>
+          </div>
+        </div>
+        <div class="fw-card mini-stat-card">
+          <span class="mini-stat-label">Memory</span>
+          <div class="mini-progress-block">
+            <div class="mini-track"><div class="mini-fill fill-green" style="width: 59.1%;"></div></div>
+            <span class="mini-pct">59.1%</span>
+          </div>
+        </div>
+        <div class="fw-card mini-stat-card">
+          <span class="mini-stat-label">Active Rules</span>
+          <span class="mini-stat-num">42</span>
+        </div>
+      </div>
+
+      <!-- Section B: Security Request Analyzer Console (Module 7 Required) -->
+      <section id="analyzer" class="fw-card analyzer-console-card">
+        <div class="card-title-bar">
+          <div class="title-with-tag">
+            <h2 class="card-heading">Security Request Analyzer</h2>
+            <span class="meta-tag">HTTP / HTTPS / SCHEME</span>
+          </div>
+          <span class="card-sub-info">Real-Time Payload Inspection</span>
+        </div>
+
+        <div class="card-body">
+          <p class="console-subtext">
+            Analyze inbound traffic payloads, URL query parameters, and protocol headers for real-time security verification.
+          </p>
+
+          <form id="analyzer-form" class="analyzer-console-bar" onsubmit="return false;">
+            <div class="input-method-badge">INBOUND</div>
+            <div class="console-input-wrap">
+              <span class="console-prompt-caret" aria-hidden="true">❯</span>
+              <input 
+                type="text" 
+                id="request-input" 
+                class="console-text-input" 
+                placeholder="Enter request or URL to analyze..." 
+                autocomplete="off" 
+                spellcheck="false"
+                aria-label="Enter request or URL to analyze"
+              />
+            </div>
+            <button type="button" id="analyze-btn" class="fw-primary-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>ANALYZE</span>
+            </button>
+          </form>
+
+          <!-- Status Notice Area -->
+          <div id="notice-box" class="fw-alert-notice" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- Section C: Security Result Panel (Module 7 Required Telemetry Matrix) -->
+      <section id="results" class="fw-card result-telemetry-card">
+        <div class="card-title-bar">
+          <div class="title-with-tag">
+            <h2 class="card-heading">Security Result Panel</h2>
+            <span class="meta-tag meta-cyan">DIAGNOSTIC MATRIX</span>
+          </div>
+          <div class="status-indicator-live">
+            <span class="dot-green"></span>
+            <span>DIAGNOSTICS READY</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="telemetry-table-grid">
+            <!-- 1. Status -->
+            <div class="telemetry-cell cell-status">
+              <span class="cell-label">Status</span>
+              <div class="cell-body">
+                <span class="fw-status-badge awaiting" id="result-status">AWAITING ANALYSIS</span>
+              </div>
+            </div>
+
+            <!-- 2. Attack -->
+            <div class="telemetry-cell cell-attack">
+              <span class="cell-label">Attack</span>
+              <div class="cell-body">
+                <span class="cell-mono-value" id="result-attack">—</span>
+              </div>
+            </div>
+
+            <!-- 3. Risk Score -->
+            <div class="telemetry-cell cell-risk">
+              <div class="risk-label-row">
+                <span class="cell-label">Risk Score</span>
+                <span class="risk-val-text" id="result-risk-score">—</span>
+              </div>
+              <div class="fw-progress-track">
+                <div class="fw-progress-bar" id="risk-gauge-bar" style="width: 0%;"></div>
+              </div>
+              <div class="risk-legend">
+                <span>0% Safe</span>
+                <span>50% Elevated</span>
+                <span>100% Critical</span>
+              </div>
+            </div>
+
+            <!-- 4. Why -->
+            <div class="telemetry-cell cell-why">
+              <span class="cell-label">Why</span>
+              <div class="cell-body">
+                <p class="cell-explanation-text" id="result-why">Analysis result will appear here.</p>
+              </div>
+            </div>
+
+            <!-- 5. Remediation -->
+            <div class="telemetry-cell cell-remediation">
+              <span class="cell-label">Remediation</span>
+              <div class="cell-body">
+                <span class="fw-pill-state" id="result-remediation">Pending analysis</span>
+              </div>
+            </div>
+
+            <!-- 6. Self-Healing -->
+            <div class="telemetry-cell cell-healing">
+              <span class="cell-label">Self-Healing</span>
+              <div class="cell-body">
+                <span class="fw-pill-state" id="result-self-healing">Monitoring not started</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Split Grid: Intelligent Remediation & Self-Healing Status -->
+      <div class="dashboard-dual-grid">
+        <!-- Section D: Intelligent Remediation Card (Module 7 Required) -->
+        <section id="remediation" class="fw-card sub-panel-card">
+          <div class="card-title-bar">
+            <div class="title-with-tag">
+              <h2 class="card-heading">Intelligent Remediation</h2>
+              <span class="meta-tag meta-purple">LAYER 5 ENFORCEMENT</span>
+            </div>
+            <span class="panel-state-pill">STANDBY</span>
+          </div>
+          <div class="card-body">
+            <div class="fw-module-row">
+              <div class="module-symbol-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div class="module-info-wrap">
+                <div class="module-tag-row">
+                  <span class="module-badge-green">AUTOMATIC MITIGATION</span>
+                </div>
+                <p class="module-desc-text" id="remediation-detail">
+                  Protection action will appear after threat detection.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section E: Self-Healing Status Card (Module 7 Required) -->
+        <section id="healing" class="fw-card sub-panel-card">
+          <div class="card-title-bar">
+            <div class="title-with-tag">
+              <h2 class="card-heading">Self-Healing Status</h2>
+              <span class="meta-tag meta-blue">LAYER 6 RESILIENCE</span>
+            </div>
+            <span class="panel-state-pill">IDLE</span>
+          </div>
+          <div class="card-body">
+            <div class="fw-module-row">
+              <div class="module-symbol-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="module-info-wrap">
+                <div class="module-tag-row">
+                  <span class="healing-current-state" id="self-healing-status">Waiting for security event</span>
+                </div>
+                <div class="fw-pipeline-strip" aria-label="Self-healing lifecycle">
+                  <span class="pipe-item">Threat Blocked</span>
+                  <span class="pipe-sep">→</span>
+                  <span class="pipe-item">Rule Applied</span>
+                  <span class="pipe-sep">→</span>
+                  <span class="pipe-item">Monitoring Active</span>
+                  <span class="pipe-sep">→</span>
+                  <span class="pipe-item">System Verified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer Telemetry Strip -->
+      <footer class="dashboard-footer">
+        <div class="footer-appliance-info">
+          <span class="fw-strong">NEXAF</span>
+          <span class="fw-sep">|</span>
+          <span>Next-Gen AI Firewall with Smart Response</span>
+        </div>
+        <div class="footer-system-status">
+          <span>APPLIANCE STATUS: READY</span>
+        </div>
+      </footer>
+      <section class="history-card">
+    <h3>Recent Security Activity</h3>
+    <ul id="history-list">
+        <!-- Event logs will appear here -->
+    </ul>
+</section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

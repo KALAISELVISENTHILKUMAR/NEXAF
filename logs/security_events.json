@@ -1,0 +1,91 @@
+[
+    {
+        "threat": "XSS",
+        "risk": "CRITICAL",
+        "confidence": 0.95,
+        "source": "10.0.0.25",
+        "action": "BLOCK",
+        "reason": "CRITICAL-risk XSS detected",
+        "remediation": [
+            "Block the malicious request",
+            "Review the affected URL",
+            "Sanitize user input",
+            "Apply output encoding"
+        ],
+        "timestamp": "2026-09-11T10:22:55.804349"
+    },
+    {
+        "threat": "XSS",
+        "risk": "CRITICAL",
+        "confidence": 0.95,
+        "source": "10.0.0.25",
+        "action": "BLOCK",
+        "reason": "CRITICAL-risk XSS detected",
+        "remediation": [
+            "Block the malicious request",
+            "Review the affected URL",
+            "Sanitize user input",
+            "Apply output encoding"
+        ],
+        "timestamp": "2026-09-11T10:32:38.700103"
+    },
+    {
+        "threat": "XSS",
+        "risk": "CRITICAL",
+        "confidence": 0.95,
+        "source": "10.0.0.25",
+        "action": "BLOCK",
+        "reason": "CRITICAL-risk XSS detected",
+        "remediation": [
+            "Block the malicious request",
+            "Review the affected URL",
+            "Sanitize user input",
+            "Apply output encoding"
+        ],
+        "timestamp": "2026-09-11T12:14:01.310766"
+    },
+    {
+        "threat": "XSS",
+        "risk": "CRITICAL",
+        "confidence": 0.95,
+        "source": "10.0.0.25",
+        "action": "BLOCK",
+        "reason": "CRITICAL-risk XSS detected",
+        "remediation": [
+            "Block the malicious request",
+            "Review the affected URL",
+            "Sanitize user input",
+            "Apply output encoding"
+        ],
+        "timestamp": "2026-09-11T12:23:43.806222"
+    },
+    {
+        "threat": "XSS",
+        "risk": "CRITICAL",
+        "confidence": 0.95,
+        "source": "10.0.0.25",
+        "action": "BLOCK",
+        "reason": "CRITICAL-risk XSS detected",
+        "remediation": [
+            "Block the malicious request",
+            "Review the affected URL",
+            "Sanitize user input",
+            "Apply output encoding"
+        ],
+        "timestamp": "2026-09-11T12:23:43.813118",
+        "verification": {
+            "threat": "XSS",
+            "risk": "CRITICAL",
+            "expected_action": "BLOCK",
+            "actual_action": "BLOCK",
+            "status": "VERIFIED",
+            "message": "XSS response verified successfully"
+        },
+        "healing": {
+            "threat": "XSS",
+            "verification_status": "VERIFIED",
+            "healing_action": "NO_ACTION",
+            "message": "XSS response is healthy"
+        }
+    }
+]

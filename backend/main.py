@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 import urllib.parse
 import re
+from response.response_engine import process_threat
 
 app = FastAPI()
 
@@ -24,6 +25,7 @@ class AnalyzeResponse(BaseModel):
     confidence: int
     evidence: List[str]
     reason: str
+    remediation: List[str]
 
 # ---------------------------------------------------------
 # Threat Detection Engine
@@ -134,7 +136,8 @@ def analyze_url_for_threats(url: str):
             "risk_level": "LOW",
             "confidence": 100,
             "evidence": [],
-            "reason": "No known malicious indicators detected"
+            "reason": "No known malicious indicators detected",
+            "remediation": []
         }
     else:
         if max_confidence >= 80:
@@ -172,15 +175,40 @@ def root():
 def analyze(request: AnalyzeRequest):
     result = analyze_url_for_threats(request.url)
 
-    # Security logging
-    print("-" * 50)
-    print(f"[NEXAF] URL        : {request.url}")
-    print(f"[NEXAF] Threat     : {'YES' if result['threat_detected'] else 'NO'}")
-    print(f"[NEXAF] Type       : {result['attack_type'] if result['attack_type'] else 'None'}")
-    print(f"[NEXAF] Risk       : {result['risk_score']}")
-    print(f"[NEXAF] Level      : {result['risk_level']}")
-    print(f"[NEXAF] Confidence : {result['confidence']}")
-    print(f"[NEXAF] Decision   : {result['decision']}")
-    print("-" * 50)
+    if result["threat_detected"]:
+        threat_name = result["attack_type"].upper().replace(" ", "_")
+
+        response_result = process_threat(
+            threat=threat_name,
+            risk=result["risk_level"],
+            confidence=result["confidence"] / 100,
+            source=request.source
+        )
+
+        result["decision"] = response_result["action"]
+        result["remediation"] = response_result["remediation"]
+
+        if response_result["action"] == "BLOCK":
+            result["allowed"] = False
+        else:
+            result["allowed"] = True
+
+        print("-" * 50)
+        print(f"[NEXAF] URL          : {request.url}")
+        print(f"[NEXAF] Threat       : YES")
+        print(f"[NEXAF] Type         : {result['attack_type']}")
+        print(f"[NEXAF] Risk         : {result['risk_score']}")
+        print(f"[NEXAF] Level        : {result['risk_level']}")
+        print(f"[NEXAF] Confidence   : {result['confidence']}")
+        print(f"[NEXAF] Decision     : {response_result['action']}")
+        print(f"[NEXAF] Remediation  : {response_result['remediation']}")
+        print("-" * 50)
+
+    else:
+        print("-" * 50)
+        print(f"[NEXAF] URL          : {request.url}")
+        print(f"[NEXAF] Threat       : NO")
+        print(f"[NEXAF] Decision     : ALLOW")
+        print("-" * 50)
 
     return result

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXAF - Next-Gen AI Firewall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>🛡️ NEXAF</h1>
+            <p>Next-Gen AI Firewall</p>
+        </header>
+
+        <main>
+
+            <section class="analyzer">
+
+                <h2>Security Request Analyzer</h2>
+
+                <input type="text" id="requestInput" placeholder="Enter request or URL">
+
+                <button id="analyzeButton">
+                    ANALYZE
+                </button>
+
+            </section>
+
+
+            <section class="result">
+
+                <h2>Security Analysis</h2>
+
+                <div class="result-box">
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span id="status">Waiting for analysis</span>
+                    </p>
+
+                    <p>
+                        <strong>Attack:</strong>
+                        <span id="attack">-</span>
+                    </p>
+
+                    <p>
+                        <strong>Risk:</strong>
+                        <span id="risk">-</span>
+                    </p>
+
+                    <div class="info">
+                        <h3>Why?</h3>
+                        <p id="reason">
+                            Enter a request and click ANALYZE.
+                        </p>
+                    </div>
+
+                    <div class="info">
+                        <h3>Remediation</h3>
+                        <p id="remediation">
+                            -
+                        </p>
+                    </div>
+
+                    <div class="info">
+                        <h3>Self-Healing</h3>
+                        <p id="healing">
+                            -
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer>
+            <p>NEXAF Security System</p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
